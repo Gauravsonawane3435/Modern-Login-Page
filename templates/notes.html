@@ -3,215 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Notes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>My Notes</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(to right, #e2e2e2, #c9d6ff);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
+        .notes-container {
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 2rem auto;
+            padding: 0 1rem;
         }
-
-        .header {
+        .notes-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
         }
-
+        .new-note-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .new-note-form input,
+        .new-note-form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .new-note-form textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .note-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .note-card h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+        .note-card p {
+            margin: 0;
+            color: #666;
+        }
+        .note-image {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            margin: 1rem 0;
+            display: none;
+            border-radius: 5px;
+        }
+        .file-input-wrapper {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        .file-input-wrapper input[type="file"] {
+            display: none;
+        }
+        .file-input-label {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .file-input-label:hover {
+            background: #45a049;
+        }
+        .selected-file-name {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .delete-note {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: #ff4444;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+        }
         .logout-btn {
-            background-color: #512da8;
+            background: #ff4444;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 0.8rem 1.5rem;
             border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
         }
-
-        .notes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .note-card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .note-card h3 {
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .note-card p {
-            color: #666;
-            margin-bottom: 15px;
-        }
-
-        .note-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-
-        .delete-btn {
-            color: #ff4444;
-            cursor: pointer;
-        }
-
-        .add-note-form {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
-
-        .add-note-form input,
-        .add-note-form textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .add-note-form textarea {
-            height: 100px;
-            resize: vertical;
-        }
-
-        .add-note-form button {
-            background-color: #512da8;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
+        .logout-btn:hover {
+            background: #ff0000;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
+    <div class="notes-container">
+        <div class="notes-header">
             <h1>My Notes</h1>
             <a href="/logout" class="logout-btn">Logout</a>
         </div>
-
-        <div class="add-note-form">
-            <h2>Add New Note</h2>
-            <input type="text" id="note-title" placeholder="Note Title">
-            <textarea id="note-content" placeholder="Note Content"></textarea>
-            <button onclick="addNote()">Add Note</button>
+        
+        <div class="new-note-form">
+            <h2>Create New Note</h2>
+            <form id="new-note-form">
+                <input type="text" id="note-title" placeholder="Note Title" required>
+                <textarea id="note-content" placeholder="Write your note here..." required></textarea>
+                <div class="file-input-wrapper">
+                    <label class="file-input-label">
+                        <i class="fas fa-image"></i> Choose Image
+                        <input type="file" id="note-image" accept="image/*">
+                    </label>
+                    <div class="selected-file-name"></div>
+                </div>
+                <img id="image-preview" class="image-preview">
+                <button type="submit" class="btn">Save Note</button>
+            </form>
         </div>
 
-        <div class="notes-grid" id="notes-container">
+        <div class="notes-grid" id="notes-grid">
             <!-- Notes will be dynamically added here -->
         </div>
     </div>
 
     <script>
-        // Fetch and display notes
+        // Load notes when page loads
+        document.addEventListener('DOMContentLoaded', loadNotes);
+
+        // Handle image preview
+        document.getElementById('note-image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('image-preview');
+            const fileNameDisplay = document.querySelector('.selected-file-name');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+                fileNameDisplay.textContent = `Selected: ${file.name}`;
+            } else {
+                preview.style.display = 'none';
+                fileNameDisplay.textContent = '';
+            }
+        });
+
+        // Load all notes
         async function loadNotes() {
             try {
                 const response = await fetch('/api/notes');
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to load notes');
+                }
                 const notes = await response.json();
-                const container = document.getElementById('notes-container');
-                container.innerHTML = '';
+                const notesGrid = document.getElementById('notes-grid');
+                notesGrid.innerHTML = '';
 
                 notes.forEach(note => {
-                    const noteElement = createNoteElement(note);
-                    container.appendChild(noteElement);
+                    const noteCard = document.createElement('div');
+                    noteCard.className = 'note-card';
+                    noteCard.innerHTML = `
+                        <button class="delete-note" onclick="deleteNote(${note.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <h3>${note.title}</h3>
+                        ${note.image_path ? `<img src="/static/${note.image_path}" class="note-image" alt="Note image">` : ''}
+                        <p>${note.content}</p>
+                    `;
+                    notesGrid.appendChild(noteCard);
                 });
             } catch (error) {
-                console.error('Error loading notes:', error);
+                console.error('Error:', error);
+                const notesGrid = document.getElementById('notes-grid');
+                notesGrid.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>${error.message || 'An error occurred while loading notes'}</p>
+                    </div>
+                `;
             }
         }
 
-        // Create note element
-        function createNoteElement(note) {
-            const div = document.createElement('div');
-            div.className = 'note-card';
-            div.innerHTML = `
-                <h3>${note.title}</h3>
-                <p>${note.content}</p>
-                <div class="note-actions">
-                    <i class="fas fa-trash delete-btn" onclick="deleteNote(${note.id})"></i>
-                </div>
-            `;
-            return div;
-        }
-
-        // Add new note
-        async function addNote() {
-            const title = document.getElementById('note-title').value;
-            const content = document.getElementById('note-content').value;
-
-            if (!title || !content) {
-                alert('Please fill in both title and content');
-                return;
+        // Handle new note submission
+        document.getElementById('new-note-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('title', document.getElementById('note-title').value);
+            formData.append('content', document.getElementById('note-content').value);
+            
+            const imageFile = document.getElementById('note-image').files[0];
+            if (imageFile) {
+                formData.append('image', imageFile);
             }
 
             try {
                 const response = await fetch('/api/notes', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ title, content }),
+                    body: formData
                 });
 
-                if (response.ok) {
-                    document.getElementById('note-title').value = '';
-                    document.getElementById('note-content').value = '';
-                    loadNotes();
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to create note');
                 }
+
+                document.getElementById('new-note-form').reset();
+                document.getElementById('image-preview').style.display = 'none';
+                document.querySelector('.selected-file-name').textContent = '';
+                loadNotes();
             } catch (error) {
-                console.error('Error adding note:', error);
+                console.error('Error:', error);
+                alert(error.message || 'An error occurred while creating the note');
             }
-        }
+        });
 
         // Delete note
         async function deleteNote(noteId) {
-            if (!confirm('Are you sure you want to delete this note?')) {
-                return;
-            }
+            if (!confirm('Are you sure you want to delete this note?')) return;
 
             try {
                 const response = await fetch(`/api/notes/${noteId}`, {
-                    method: 'DELETE',
+                    method: 'DELETE'
                 });
 
-                if (response.ok) {
-                    loadNotes();
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to delete note');
                 }
+
+                loadNotes();
             } catch (error) {
-                console.error('Error deleting note:', error);
+                console.error('Error:', error);
+                alert(error.message || 'An error occurred while deleting the note');
             }
         }
-
-        // Load notes when page loads
-        document.addEventListener('DOMContentLoaded', loadNotes);
     </script>
 </body>
 </html> 
