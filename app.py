@@ -6,14 +6,22 @@ import os
 from werkzeug.utils import secure_filename
 import time
 import sqlite3
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
-app.config['SECRET_KEY'] = 'hsidferfbh3dbsyh'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///notes.db'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///notes.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+# Handle PostgreSQL URL for Render
+if app.config['SQLALCHEMY_DATABASE_URI'].startswith("postgres://"):
+    app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_DATABASE_URI'].replace("postgres://", "postgresql://", 1)
 
 # Create upload folder if it doesn't exist
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -214,5 +222,6 @@ def init_db():
         app.logger.info("Database initialized successfully")
 
 if __name__ == '__main__':
-    init_db()
-    app.run(debug=True) 
+    with app.app_context():
+        db.create_all()
+    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000))) 
