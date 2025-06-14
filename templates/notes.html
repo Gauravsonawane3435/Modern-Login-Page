@@ -209,6 +209,247 @@
             background: #5a52d5;
             transform: translateY(-2px);
         }
+
+        /* Chatbot Styles */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .chat-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #6C63FF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+            background: #5a52d5;
+        }
+
+        .chat-container {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: #6C63FF;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin-bottom: 5px;
+        }
+
+        .bot-message {
+            background: #f0f0f0;
+            align-self: flex-start;
+        }
+
+        .user-message {
+            background: #6C63FF;
+            color: white;
+            align-self: flex-end;
+        }
+
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 2px solid #e4e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .chat-input input:focus {
+            border-color: #6C63FF;
+            outline: none;
+        }
+
+        .chat-input button {
+            background: #6C63FF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input button:hover {
+            background: #5a52d5;
+        }
+
+        .suggestion-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 10px;
+            background: #f8f9fa;
+        }
+
+        .suggestion-chip {
+            background: white;
+            border: 1px solid #6C63FF;
+            color: #6C63FF;
+            padding: 5px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .suggestion-chip:hover {
+            background: #6C63FF;
+            color: white;
+        }
+
+        /* Speech Recognition Styles */
+        .speech-controls {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+            align-items: center;
+        }
+
+        .mic-button {
+            background: #6C63FF;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .mic-button i {
+            font-size: 1.2rem;
+        }
+
+        .mic-button:hover {
+            background: #5a52d5;
+            transform: scale(1.05);
+        }
+
+        .mic-button.listening {
+            background: #ff4444;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .speech-status {
+            font-size: 0.9rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-grow: 1;
+        }
+
+        .speech-status i {
+            color: #6C63FF;
+        }
+
+        .create-note-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .create-note-btn i {
+            font-size: 1rem;
+        }
+
+        .create-note-btn:hover {
+            background: #45a049;
+        }
+
+        .create-note-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -248,6 +489,51 @@
 
         <div class="notes-grid" id="notes-grid">
             <!-- Notes will be dynamically added here -->
+        </div>
+    </div>
+
+    <!-- Chatbot Widget -->
+    <div class="chat-widget">
+        <button class="chat-button" id="chat-toggle">
+            <i class="fas fa-robot"></i>
+        </button>
+        <div class="chat-container" id="chat-container">
+            <div class="chat-header">
+                <h3><i class="fas fa-robot"></i> Note Assistant</h3>
+                <button class="close-chat" id="close-chat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="suggestion-chips">
+                <div class="suggestion-chip">How to organize notes?</div>
+                <div class="suggestion-chip">Best practices for note-taking</div>
+                <div class="suggestion-chip">Add images to notes</div>
+                <div class="suggestion-chip">Search tips</div>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message bot-message">
+                    Hello! I'm your note-taking assistant. How can I help you today?
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chat-input" placeholder="Type your message...">
+                <button id="send-message">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            <div class="speech-controls">
+                <button class="mic-button" id="mic-button" title="Start/Stop Recording">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <div class="speech-status" id="speech-status">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Click the mic to start recording</span>
+                </div>
+                <button class="create-note-btn" id="create-note-btn" disabled>
+                    <i class="fas fa-plus"></i>
+                    Create Note
+                </button>
+            </div>
         </div>
     </div>
 
@@ -397,6 +683,185 @@
         async function editNote(noteId) {
             // Implement edit functionality
             alert('Edit functionality coming soon!');
+        }
+
+        // Chatbot functionality
+        const chatToggle = document.getElementById('chat-toggle');
+        const chatContainer = document.getElementById('chat-container');
+        const closeChat = document.getElementById('close-chat');
+        const chatInput = document.getElementById('chat-input');
+        const sendMessage = document.getElementById('send-message');
+        const chatMessages = document.getElementById('chat-messages');
+        const suggestionChips = document.querySelectorAll('.suggestion-chip');
+
+        // Toggle chat window
+        chatToggle.addEventListener('click', () => {
+            chatContainer.style.display = 'flex';
+        });
+
+        closeChat.addEventListener('click', () => {
+            chatContainer.style.display = 'none';
+        });
+
+        // Send message function
+        function sendUserMessage(message) {
+            if (!message.trim()) return;
+
+            // Add user message
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'message user-message';
+            userMessageDiv.textContent = message;
+            chatMessages.appendChild(userMessageDiv);
+
+            // Clear input
+            chatInput.value = '';
+
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Simulate bot response
+            setTimeout(() => {
+                const botResponse = getBotResponse(message);
+                const botMessageDiv = document.createElement('div');
+                botMessageDiv.className = 'message bot-message';
+                botMessageDiv.textContent = botResponse;
+                chatMessages.appendChild(botMessageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 1000);
+        }
+
+        // Handle send button click
+        sendMessage.addEventListener('click', () => {
+            sendUserMessage(chatInput.value);
+        });
+
+        // Handle enter key
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendUserMessage(chatInput.value);
+            }
+        });
+
+        // Handle suggestion chips
+        suggestionChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                sendUserMessage(chip.textContent);
+            });
+        });
+
+        // Bot response logic
+        function getBotResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('organize') || lowerMessage.includes('organization')) {
+                return "Here are some tips to organize your notes:\n1. Use clear, descriptive titles\n2. Add tags or categories\n3. Keep related notes together\n4. Use the search feature to find notes quickly";
+            }
+            
+            if (lowerMessage.includes('practice') || lowerMessage.includes('best practice')) {
+                return "Best practices for note-taking:\n1. Keep notes concise and clear\n2. Use bullet points for better readability\n3. Add images when helpful\n4. Review and update notes regularly";
+            }
+            
+            if (lowerMessage.includes('image') || lowerMessage.includes('picture')) {
+                return "To add images to your notes:\n1. Click the 'Add Image' button when creating/editing a note\n2. Select an image from your device\n3. The image will be displayed in your note\n4. You can add multiple images to a single note";
+            }
+            
+            if (lowerMessage.includes('search')) {
+                return "Search tips:\n1. Use the search bar at the top of the dashboard\n2. Search works on both titles and content\n3. Type keywords to find relevant notes\n4. Search is case-insensitive";
+            }
+            
+            return "I can help you with:\n- Organizing your notes\n- Best practices for note-taking\n- Adding images to notes\n- Using the search feature\nJust ask me about any of these topics!";
+        }
+
+        // Speech Recognition Setup
+        const micButton = document.getElementById('mic-button');
+        const speechStatus = document.getElementById('speech-status');
+        const createNoteBtn = document.getElementById('create-note-btn');
+        let recognition = null;
+        let isListening = false;
+        let transcribedText = '';
+
+        // Check if browser supports speech recognition
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+
+            recognition.onstart = () => {
+                isListening = true;
+                micButton.classList.add('listening');
+                speechStatus.innerHTML = '<i class="fas fa-microphone"></i> Listening...';
+                createNoteBtn.disabled = true;
+            };
+
+            recognition.onend = () => {
+                isListening = false;
+                micButton.classList.remove('listening');
+                speechStatus.innerHTML = '<i class="fas fa-info-circle"></i> Click the mic to start recording';
+                if (transcribedText.trim()) {
+                    createNoteBtn.disabled = false;
+                }
+            };
+
+            recognition.onresult = (event) => {
+                let interimTranscript = '';
+                let finalTranscript = '';
+
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript;
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+
+                if (finalTranscript) {
+                    transcribedText += finalTranscript + ' ';
+                    // Add transcribed text to chat
+                    const botMessageDiv = document.createElement('div');
+                    botMessageDiv.className = 'message bot-message';
+                    botMessageDiv.textContent = finalTranscript;
+                    chatMessages.appendChild(botMessageDiv);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }
+            };
+
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                speechStatus.innerHTML = `<i class="fas fa-exclamation-circle"></i> Error: ${event.error}`;
+                micButton.classList.remove('listening');
+                isListening = false;
+            };
+
+            // Toggle speech recognition
+            micButton.addEventListener('click', () => {
+                if (isListening) {
+                    recognition.stop();
+                } else {
+                    transcribedText = '';
+                    recognition.start();
+                }
+            });
+
+            // Create note from transcribed text
+            createNoteBtn.addEventListener('click', () => {
+                if (transcribedText.trim()) {
+                    // Pre-fill the new note form
+                    document.getElementById('note-title').value = 'Voice Note ' + new Date().toLocaleString();
+                    document.getElementById('note-content').value = transcribedText.trim();
+                    
+                    // Scroll to the new note form
+                    document.querySelector('.new-note-form').scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Reset transcribed text
+                    transcribedText = '';
+                    createNoteBtn.disabled = true;
+                }
+            });
+        } else {
+            micButton.style.display = 'none';
+            speechStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Speech recognition not supported in this browser';
         }
     </script>
 </body>
