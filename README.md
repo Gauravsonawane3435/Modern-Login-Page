@@ -1,98 +1,119 @@
-# Modern Login Page with Notes App
+# Modern Note Taking Application
 
-A modern web application featuring a beautiful login page and a notes management system, built with Flask, HTML, CSS, and JavaScript.
+A full-stack note-taking application with a beautiful UI, built with Flask and modern web technologies.
 
 ## Features
-- Responsive design with modern UI
-- User authentication (Sign Up/Sign In)
-- Secure password hashing
-- Notes management system
-  - Create new notes
-  - View all notes
-  - Delete notes
-- SQLite database for data persistence
-- Session management
-- Clean and intuitive user interface
+
+- 🔐 Secure user authentication
+- 📝 Create, read, update, and delete notes
+- 🖼️ Image upload support
+- 🔍 Search functionality
+- 📱 Responsive design
+- 🎨 Modern UI with purple/white theme
 
 ## Project Structure
+
 ```
-project_folder/
-├── app.py              # Flask application
-├── static/
-│   └── style.css      # Styles for the application
-├── templates/
-│   ├── index.html     # Login/Signup page
-│   └── notes.html     # Notes management page
-└── requirements.txt    # Python dependencies
+.
+├── backend/
+│   ├── app.py
+│   ├── requirements.txt
+│   ├── static/
+│   │   └── uploads/
+│   └── templates/
+│       ├── index.html
+│       └── dashboard.html
+└── README.md
 ```
 
 ## Setup Instructions
 
-1. Clone the repository
-```bash
-git clone <repository-url>
-cd <project-folder>
-```
+### Backend Setup
 
-2. Create and activate virtual environment
-```bash
-# Windows
-python -m venv venv
-venv\Scripts\activate
+1. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   ```
 
-# Linux/Mac
-python3 -m venv venv
-source venv/bin/activate
-```
+2. Activate the virtual environment:
+   - Windows:
+     ```bash
+     venv\Scripts\activate
+     ```
+   - Unix/MacOS:
+     ```bash
+     source venv/bin/activate
+     ```
 
-3. Install dependencies
-```bash
-pip install -r requirements.txt
-```
+3. Install dependencies:
+   ```bash
+   cd backend
+   pip install -r requirements.txt
+   ```
 
-4. Run the application
-```bash
-python app.py
-```
+4. Create a `.env` file in the backend directory with the following content:
+   ```
+   SECRET_KEY=your-secret-key-here
+   DATABASE_URL=sqlite:///notes.db
+   FLASK_ENV=development
+   FLASK_APP=app.py
+   ```
 
-5. Open your browser and navigate to `http://localhost:5000`
+5. Run the Flask application:
+   ```bash
+   flask run
+   ```
 
-## Dependencies
-- Flask==2.3.3
-- Flask-SQLAlchemy==3.1.1
-- Flask-Login==0.6.2
-- Flask-WTF==1.1.1
-- Werkzeug==2.3.7
-- python-dotenv==1.0.0
+The backend will be available at `http://localhost:5000`
+
+## Usage
+
+1. Open your browser and navigate to `http://localhost:5000`
+2. Register a new account or login with existing credentials
+3. After logging in, you'll be redirected to the dashboard
+4. Create, edit, and delete notes
+5. Upload images to your notes
+6. Search through your notes using the search bar
 
 ## Features in Detail
 
 ### Authentication
-- User registration with email, name, and password
-- Secure login system
-- Password hashing for security
+- Secure login and registration
+- Password hashing
 - Session management
 
 ### Notes Management
 - Create new notes with title and content
-- View all notes in a responsive grid layout
-- Delete unwanted notes
-- Notes are associated with user accounts
-- Real-time updates
+- Upload images to notes
+- Edit existing notes
+- Delete notes
+- Search through notes
 
-### UI/UX
-- Modern gradient background
-- Smooth animations
-- Responsive design
-- Social media integration buttons
-- Clean and intuitive interface
+### User Interface
+- Modern purple and white theme
+- Responsive design for all devices
+- Clean and intuitive layout
+- Toast notifications for actions
+- Image preview before upload
 
 ## Security Features
+
 - Password hashing using Werkzeug
-- Session-based authentication
-- Protected routes
-- SQL injection prevention through SQLAlchemy
 - CSRF protection
+- Secure file upload handling
+- Input validation
+- SQL injection prevention
+
+## Contributing
+
+1. Fork the repository
+2. Create a new branch
+3. Make your changes
+4. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.
 
 ## Author
 Gaurav Sonawane
